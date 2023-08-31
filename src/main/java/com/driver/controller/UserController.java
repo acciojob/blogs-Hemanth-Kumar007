@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
-
+    UserService userService;
     @PostMapping("/create")
     public ResponseEntity<Void> createUser(@RequestParam String username, @RequestParam String password) {
         // create a new user with given username and password
-        User user = userService.createUser(username, password);
+        userService.createUser(username,password);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

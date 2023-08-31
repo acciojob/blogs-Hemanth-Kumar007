@@ -1,33 +1,54 @@
 package com.driver.models;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name="Blog")
 public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer blogId;
+    private int blogId;
     private String title;
     private String content;
-    private Date pubDate;
+    @CreationTimestamp
+    private Date publicationDate;
+
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
+
+    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Image> imageList;
 
     public Blog() {
     }
 
-    public Blog(Integer blogId, String title, String content, Date pubDate) {
+    public Blog(User user, String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
+    public Blog(int blogId, String title, String content, Date publicationDate, User user, List<Image> imageList) {
         this.blogId = blogId;
         this.title = title;
         this.content = content;
-        this.pubDate = pubDate;
+        this.publicationDate = publicationDate;
+        this.user = user;
+        this.imageList = imageList;
     }
 
-    public Integer getBlogId() {
+    public int getId() {
         return blogId;
     }
 
-    public void setBlogId(Integer blogId) {
+    public void setId(int blogId) {
         this.blogId = blogId;
     }
 
@@ -48,18 +69,28 @@ public class Blog {
     }
 
     public Date getPubDate() {
-        return pubDate;
+        return publicationDate;
     }
 
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
+    public void setPubDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
     }
 
-    //Foreigh Key declaration
-    @ManyToOne
-    @JoinColumn
-    private User user;
+    public User getUser() {
+        return user;
+    }
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    private Image image;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
+    }
+
+
 }
